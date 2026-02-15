@@ -4,9 +4,12 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\OrderStatus;
+use App\Models\Sms;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Models\Order;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
 
 class OrdersController extends Controller
@@ -29,6 +32,30 @@ class OrdersController extends Controller
             // Update Order Status
             Order::where('id', $data['order_id'])->update(['order_status'=>$data['order_status']]);
             Session::put('success_message', 'შეკვეთის სტატუსი წარმატებით გაახლდა!');
+
+            // Get delivery details
+            $deliveryDetails = Order::select('mobile', 'email', 'name')->where('id', $data['order_id'])->first()->toArray();
+
+             // Send Order Status update sms
+              $message = "ძვირფასო მომხმარებელო, თქვენი შეკვეთის № ".$data['order_id']." სტატუსი განახლდა '".$data['order_status']."'- გამოგზავნილია. naes-shop.com-ის ადმინისტრაცია.";
+              $mobile =$deliveryDetails['mobile'];
+              Sms::sendSms($message, $mobile);
+            $orderDetails = Order::with('orders_products')->where('id', $data['order_id'])->first()->toArray();
+
+              // Send Order Status Update Email
+
+            $email = $deliveryDetails['email'];
+            $messageData = [
+                'email' => $email,
+                'name' => $deliveryDetails['name'],
+                'order_id' => $data['order_id'],
+                'order_status' => $data['order_status'],
+                'orderDetails' => $orderDetails
+            ];
+            Mail::send('emails.order_status', $messageData, function($message) use ($email) {
+                $message->to($email)->subject('შეკვეთის სტატუსი გაახლდა - naes-shop.com');
+            });
+
             return redirect()->back();
         }
     }
