@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\OrdersLog;
 use App\Models\OrderStatus;
 use App\Models\Sms;
 use App\Models\User;
@@ -23,7 +24,8 @@ class OrdersController extends Controller
         $orderDetails = Order::with('orders_products')->where('id', $id)->first()->toArray();
         $userDetails = User::where('id', $orderDetails['user_id'])->first()->toArray();
         $orderStatuses = OrderStatus::where('status', 1)->get()->toArray();
-        return view('admin.orders.order_details')->with(compact('orderDetails', 'userDetails', 'orderStatuses'));
+        $orderLog = OrdersLog::where('order_id', $id)->orderBy('id','Desc')->get()->toArray();
+        return view('admin.orders.order_details')->with(compact('orderDetails', 'userDetails', 'orderStatuses', 'orderLog'));
     }
 
     public function updateOrderStatus(Request $request) {
@@ -55,6 +57,12 @@ class OrdersController extends Controller
             Mail::send('emails.order_status', $messageData, function($message) use ($email) {
                 $message->to($email)->subject('შეკვეთის სტატუსი გაახლდა - naes-shop.com');
             });
+
+            // Update Order Log
+            $log = new OrdersLog;
+            $log->order_id = $data['order_id'];
+            $log->order_status = $data['order_status'];
+            $log->save();
 
             return redirect()->back();
         }
