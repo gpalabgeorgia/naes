@@ -18,10 +18,6 @@ use App\Models\Category;
 
 
 
-// Route::get('/', function () {
-//     return view('welcome');
-// });
-
 Route::prefix('/admin')->namespace('Admin')->group(function() {
     // All the admin routes will be defined here
     Route::match(['get', 'post'],'/', [AdminController::class, 'login']);
@@ -93,6 +89,7 @@ Route::prefix('/admin')->namespace('Admin')->group(function() {
         Route::get('orders', [OrdersController::class, 'orders']);
         Route::get('orders/{id}', [OrdersController::class, 'orderDetails']);
         Route::post('update-order-status', [OrdersController::class, 'updateOrderStatus']);
+        Route::get('view-order-invoice/{id}', [OrdersController::class, 'viewOrderInvoice']);
     });
 
 });

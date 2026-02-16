@@ -64,7 +64,10 @@
                     <td>{{ $order['order_status'] }}</td>
                     <td>{{ $order['payment_method'] }}</td>
                     <td>
-                      <a title="ორდერდის დეტალების ნახვა" href="{{ url('admin/orders/'.$order['id']) }}"><i class="fas fa-file"></i></a>
+                      <a title="შეკვეთის დეტალების ნახვა" href="{{ url('admin/orders/'.$order['id']) }}"><i class="fas fa-file"></i></a>&nbsp;&nbsp;
+                        @if($order['order_status']=='Shipped' || $order['order_status']=='Delivered')
+                        <a title="შეკვეთის ინვოისის ნახვა" target="_blank" href="{{ url('admin/view-order-invoice/'.$order['id']) }}"><i class="fas fa-print"></i></a>
+                        @endif
                     </td>
                   </tr>
                   @endforeach
