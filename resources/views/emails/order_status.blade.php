@@ -7,6 +7,10 @@
             <tr><td>მოგესალმებით ძვირფასო {{ $name }},</td></tr>
             <tr><td>&nbsp;</td></tr>
             <tr><td>თქვენი შეკვეთის № {{ $order_id }} სტატუსი გაახლდა - {{ $order_status }}.</td></tr>
+            @if(!empty($courier_name) && !empty($tracking_number))
+            <tr><td>&nbsp;</td></tr>
+            <tr><td>კურიერის სახელი: {{ $courier_name }} <br> გზავნილის ნომერი: {{ $tracking_number }}</td></tr>
+            @endif
             <tr><td>&nbsp;</td></tr>
             <tr><td>შეკვეთის დეტალები იხილეთ ქვემოთ: </td></tr>
             <tr><td>&nbsp;</td></tr>

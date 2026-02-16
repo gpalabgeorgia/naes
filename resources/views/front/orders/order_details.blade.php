@@ -24,6 +24,18 @@
                     <td><strong>შეკვეთის სტატუსი</strong></td>
                     <td>{{ $orderDetails['order_status'] }}</td>
                 </tr>
+                @if(!empty($orderDetails['courier_name']))
+                <tr>
+                    <td><strong>კურიერის სახელი</strong></td>
+                    <td>{{ $orderDetails['courier_name'] }}</td>
+                </tr>
+                @endif
+                @if(!empty($orderDetails['tracking_number']))
+                <tr>
+                    <td><strong>გზავნილის ნომერი</strong></td>
+                    <td>{{ $orderDetails['tracking_number'] }}</td>
+                </tr>
+                @endif
                 <tr>
                     <td><strong>შეკვეთის ჯამი</strong></td>
                     <td>{{ $orderDetails['grand_total'] }} ₾.</td>

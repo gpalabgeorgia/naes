@@ -50,6 +50,18 @@
                                         <td><strong>შეკვეთის სტატუსი</strong></td>
                                         <td>{{ $orderDetails['order_status'] }}</td>
                                     </tr>
+                                    @if(!empty($orderDetails['courier_name']))
+                                        <tr>
+                                            <td><strong>კურიერის სახელი</strong></td>
+                                            <td>{{ $orderDetails['courier_name'] }}</td>
+                                        </tr>
+                                    @endif
+                                    @if(!empty($orderDetails['tracking_number']))
+                                        <tr>
+                                            <td><strong>გზავნილის ნომერი</strong></td>
+                                            <td>{{ $orderDetails['tracking_number'] }}</td>
+                                        </tr>
+                                    @endif
                                     <tr>
                                         <td><strong>შეკვეთის ჯამი</strong></td>
                                         <td>{{ $orderDetails['grand_total'] }} ₾.</td>
@@ -210,8 +222,8 @@
                                                     <option value="{{ $status['name'] }}" @if(isset($orderDetails['order_status']) && $orderDetails['order_status']==$status['name']) selected="" @endif>{{ $status['name'] }}</option>
                                                 @endforeach
                                             </select>&nbsp;&nbsp;
-                                            <input type="text" width="120px" name="courier_name" id="courier_name" placeholder="კურიერის სახელი">
-                                            <input type="text" width="120px" name="tracking_number" id="tracking_number" placeholder="გზავნილის ნომერი">
+                                            <input type="text" width="120px" name="courier_name" @if(empty($orderDetails['courier_name'])) id="courier_name" @endif placeholder="კურიერის სახელი" value="{{ $orderDetails['courier_name'] }}">
+                                            <input type="text" width="120px" name="tracking_number" @if(empty($orderDetails['tracking_number'])) id="tracking_number" @endif placeholder="გზავნილის ნომერი" value="{{ $orderDetails['tracking_number'] }}">
                                             <button type="submit">დადასტურება</button>
                                         </form>
                                     </td>

@@ -50,13 +50,14 @@ class OrdersController extends Controller
             $orderDetails = Order::with('orders_products')->where('id', $data['order_id'])->first()->toArray();
 
               // Send Order Status Update Email
-
             $email = $deliveryDetails['email'];
             $messageData = [
                 'email' => $email,
                 'name' => $deliveryDetails['name'],
                 'order_id' => $data['order_id'],
                 'order_status' => $data['order_status'],
+                'courier_name' => $data['courier_name'],
+                'tracking_number' => $data['tracking_number'],
                 'orderDetails' => $orderDetails
             ];
             Mail::send('emails.order_status', $messageData, function($message) use ($email) {
