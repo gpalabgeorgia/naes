@@ -35,6 +35,11 @@ class OrdersController extends Controller
             Order::where('id', $data['order_id'])->update(['order_status'=>$data['order_status']]);
             Session::put('success_message', 'შეკვეთის სტატუსი წარმატებით გაახლდა!');
 
+            // Update Courier Name and Tracking Number
+            if(!empty($data['courier_name']) && !empty($data['tracking_number'])) {
+                Order::where('id', $data['order_id'])->update(['courier_name'=>$data['courier_name'], 'tracking_number'=>$data['tracking_number']]);
+            }
+
             // Get delivery details
             $deliveryDetails = Order::select('mobile', 'email', 'name')->where('id', $data['order_id'])->first()->toArray();
 

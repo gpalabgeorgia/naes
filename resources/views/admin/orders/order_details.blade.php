@@ -204,12 +204,14 @@
                                     <td colspan="2">
                                         <form action="{{ url('admin/update-order-status') }}" method="post">@csrf
                                                 <input type="hidden" name="order_id" value="{{ $orderDetails['id'] }}">
-                                            <select name="order_status" id="" required="">
+                                            <select name="order_status" id="order_status" required="">
                                                 <option value="">აირჩიე სტატუსი</option>
                                                 @foreach($orderStatuses as $status)
                                                     <option value="{{ $status['name'] }}" @if(isset($orderDetails['order_status']) && $orderDetails['order_status']==$status['name']) selected="" @endif>{{ $status['name'] }}</option>
                                                 @endforeach
                                             </select>&nbsp;&nbsp;
+                                            <input type="text" width="120px" name="courier_name" id="courier_name" placeholder="კურიერის სახელი">
+                                            <input type="text" width="120px" name="tracking_number" id="tracking_number" placeholder="გზავნილის ნომერი">
                                             <button type="submit">დადასტურება</button>
                                         </form>
                                     </td>
